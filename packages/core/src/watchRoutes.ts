@@ -3,11 +3,11 @@ import path from "path";
 import express from "express";
 import chokidar from "chokidar";
 
-async function watchRoutes({
+export default async function watchRoutes({
   ssgdir = "ssgsvelte",
   app,
   config,
-  dirname
+  dirname,
 }: {
   ssgdir?: string;
   config: any;
@@ -44,20 +44,28 @@ async function watchRoutes({
   //TODO: Add in a service worker or make it stop throwing an error somehow
 
   //TODO: Rebuild routes that rely on components
-  await chokidar
-    .watch("src/components")
-    .on("all", (e, p) =>
-      copyStaticFiles(e, p, "src/components", `${ssgdir}/.cache/components`)
-    );
+  await chokidar.watch("src/components").on("all", (event, path) =>
+    copyStaticFiles({
+      event,
+      path,
+      input: "src/components",
+      output: `${ssgdir}/.cache/components`,
+    })
+  );
   await chokidar
     .watch("static")
-    .on("all", (e, p) => copyStaticFiles(e, p, "static", `${ssgdir}/build`));
+    .on("all", (event, path) =>
+      copyStaticFiles({
+        event,
+        path,
+        input: "static",
+        output: `${ssgdir}/build`,
+      })
+    );
 
   await chokidar
     .watch("src/routes")
-    .on("all", (e, p) =>
-      onRouteUpdate(e, p, "src/routes", config, dirname)
-    );
+    .on("all", (e, p) => onRouteUpdate(e, p, "src/routes", config, dirname));
   await chokidar
     .watch(`${ssgdir}/.cache/routes`)
     .on("all", (e, p) =>

@@ -5,7 +5,7 @@ import cors from "cors";
 
 import { error, listen } from "./utils";
 
-export async function appServer({
+export default async function appServer({
   app,
   callback,
   port = 3000,

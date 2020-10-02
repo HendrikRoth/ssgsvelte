@@ -2,7 +2,7 @@ import fs from "fs-extra";
 
 import { processDirectory, processDirectoryForParameters } from "./processing";
 
-export default async function buildRoutes({
+export default async function readRoutes({
   config,
   dirname,
   ssgdir = "ssgsvelte",
@@ -30,6 +30,4 @@ export default async function buildRoutes({
     dirname,
     source: `${ssgdir}/.cache/routes`,
   });
-
-  // callback..?
 }

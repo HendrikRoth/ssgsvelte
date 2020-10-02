@@ -6,13 +6,11 @@ import http from "http";
 
 import { listen, error } from "./utils";
 
-export async function graphqlServer({
-  sources = [],
+export default async function graphqlServer({
   port = 3001,
   schema = {},
   graphiql = process.env.NODE_ENV === "production",
 }: {
-  sources: any[];
   port?: number;
   schema: any;
   graphiql: boolean;
@@ -32,6 +30,7 @@ export async function graphqlServer({
   });
 }
 
+/*
 export function start({
   app,
   port = 3001,
@@ -59,3 +58,4 @@ export function start({
     if (callback) callback();
   });
 }
+*/

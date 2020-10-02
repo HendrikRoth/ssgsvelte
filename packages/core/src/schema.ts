@@ -1,12 +1,13 @@
 import { SchemaComposer } from "graphql-compose";
 
-export default function schema(sources: any[]) {
+export default async function schema(sources: any[]) {
   const schemaComposer = new SchemaComposer();
 
   sources.forEach(async source => {
     try {
-      const ImportedDataSource = await import(source.plugin);
-      new ImportedDataSource(source, schemaComposer);
+      const importedSource = await import(source.name);
+      const options = {...source.options, ...schemaComposer};
+      importedSource.init(options);
     }
     catch(err) {
       console.error(err);
